@@ -13,10 +13,10 @@
 #   rules-builder.sh remove <ID>
 #   rules-builder.sh check          # validate: no duplicate IDs, priority rules present
 #
-# Env: RULES_FILE (default: $CONTEXT_KIT_HOME/always-on/rules.md, else ~/.context-kit/...)
+# Env: RULES_FILE (default: $CCB_HOME/always-on/rules.md, else ~/.context-config-builder/...)
 set -eu
 
-CORE="${CONTEXT_KIT_HOME:-${HOME}/.context-kit}"
+CORE="${CCB_HOME:-${HOME}/.context-config-builder}"
 RULES_FILE="${RULES_FILE:-$CORE/always-on/rules.md}"
 
 die() { echo "error: $1" >&2; exit "${2:-1}"; }

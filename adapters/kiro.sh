@@ -1,8 +1,9 @@
 #!/bin/sh
-# Kiro adapter: project the neutral context-config-builder core onto Kiro CLI.
+# Kiro adapter: project the Context Configuration Builder core onto Kiro CLI.
 #   always-on/*  -> ~/.kiro/steering/*
 #   projects/<n> -> ~/.kiro/skills/<n>/SKILL.md  (adds required frontmatter)
 # Usage: ./adapters/kiro.sh apply [--dry-run]
+# Security: no eval, no network; writes only under $KIRO.
 set -eu
 
 CORE="${CCB_HOME:-${HOME}/.context-config-builder}"
@@ -10,18 +11,18 @@ KIRO="${KIRO_HOME:-${HOME}/.kiro}"
 DRY=0; CMD="${1:-}"; [ "${2:-}" = "--dry-run" ] && DRY=1
 
 [ "$CMD" = "apply" ] || { echo "usage: kiro.sh apply [--dry-run]" >&2; exit 2; }
-[ -d "$CORE" ] || { echo "error: core not found at $CORE (run install.sh)" >&2; exit 1; }
+[ -d "$CORE" ] || { echo "error: core not found at $CORE (run install-core.sh)" >&2; exit 1; }
 
 say() { printf '  %s\n' "$1"; }
-run() { [ "$DRY" -eq 1 ] || eval "$1"; }
 
-run "mkdir -p '$KIRO/steering' '$KIRO/skills'"
+[ "$DRY" -eq 1 ] || mkdir -p "$KIRO/steering" "$KIRO/skills"
 
-# Tier 1: always-on -> steering
+# Tier 1: always-on -> steering (direct, quoted commands; no eval)
 for f in "$CORE"/always-on/*.md; do
   [ -e "$f" ] || continue
-  say "steering <- $(basename "$f")"
-  run "cp '$f' '$KIRO/steering/$(basename "$f")'"
+  base=$(basename "$f")
+  say "steering <- $base"
+  [ "$DRY" -eq 1 ] || cp "$f" "$KIRO/steering/$base"
 done
 
 # Tier 2: projects -> skills (wrap with frontmatter Kiro needs)
@@ -29,8 +30,8 @@ for f in "$CORE"/projects/*.md; do
   [ -e "$f" ] || continue
   name=$(basename "$f" .md)
   say "skill    <- $name"
-  run "mkdir -p '$KIRO/skills/$name'"
   if [ "$DRY" -eq 0 ]; then
+    mkdir -p "$KIRO/skills/$name"
     {
       printf -- '---\n'
       printf 'name: %s-context\n' "$name"
