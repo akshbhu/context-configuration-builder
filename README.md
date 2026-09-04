@@ -50,8 +50,17 @@ Your mileage depends on your agent version and configuration.
 
 - `templates/steering/` — rules, bootstrap protocol, registry, portfolio, cross-links (all generic, no personal data)
 - `templates/skills/_example/` — the skill format
-- `install.sh`, `scripts/add-project.sh`
+- `install.sh`, `scripts/add-project.sh`, `scripts/remove-project.sh`
+- `demo/demo.sh` — clean-room walkthrough (basis for the demo GIF)
 - `docs/ARCHITECTURE.md` — the token-cost design
+- `docs/paper/` — novelty write-up (three-tier cost-stratified context architecture)
+- `marketing/` — launch post + go-to-market strategy
+
+## Try it in 30 seconds (safe, no changes to your setup)
+
+```sh
+sh demo/demo.sh
+```
 
 ## Compatibility
 
