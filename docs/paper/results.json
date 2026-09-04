@@ -1,0 +1,33 @@
+{
+  "date": "2026-09-04",
+  "method": "byte sizes via wc over ~/.kiro/steering and ~/.kiro/skills on a live 4-active-project deployment; token estimates at ~4 bytes/token",
+  "always_on_tier_bytes": 11808,
+  "always_on_files": {
+    "00-rules.md": 2433,
+    "bootstrap.md": 1850,
+    "context-registry.md": 1949,
+    "cross-links.md": 3141,
+    "portfolio.md": 2435
+  },
+  "per_project_skill_bytes": {
+    "aivideoyoutube": {"body": 1325, "metadata": 275},
+    "animevlog": {"body": 3402, "metadata": 295},
+    "apple-ml": {"body": 3569, "metadata": 258},
+    "photoback": {"body": 1712, "metadata": 270}
+  },
+  "means": {"body": 2502, "metadata": 274},
+  "reduction_by_project_count": {
+    "4": 0.409, "10": 0.605, "25": 0.749, "50": 0.814, "100": 0.850, "asymptote": 0.890
+  },
+  "recall_battery": {
+    "probes": 5, "passed": 5,
+    "items": [
+      "measured Int4 compression 3.7x",
+      "mlx-vlm bug origin = PhotoBack",
+      "zero-interference Jaccard 0.0",
+      "active context set enumeration",
+      "inactive project (mlx-vlm) exclusion"
+    ]
+  },
+  "notes": "N=4 directly measured; larger N via closed-form model with measured per-project averages. Reproduce: wc -c over the files; recall battery via fresh kiro-cli --no-interactive sessions."
+}

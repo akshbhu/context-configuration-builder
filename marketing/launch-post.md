@@ -20,12 +20,11 @@ A one-line **registry** decides which projects are "active." Flip a marker, and 
 
 ## Does it actually work?
 
-Yes — and I checked, rather than assumed. In a fresh agent session (no prior chat), it correctly answered:
-- which projects are in the active context,
-- a *measured* cross-project fact (a quantization result) and which papers it feeds,
-- which of two repo clones was canonical and why.
+Yes — and I measured it, rather than assuming.
 
-All from loaded context, no tools, in one turn.
+**Token cost (measured on a real 4-project deployment):** 40.9% smaller per-turn context than loading everything always-on. Because the always-on tier is fixed while per-project detail moves on-demand, the saving *grows* with project count — projected 85% at 100 projects, asymptoting to 89% (all from measured per-project sizes; see `docs/paper/results.json`).
+
+**Recall (fresh sessions, 5/5):** in brand-new agent sessions with no prior chat and tools disabled, it correctly recalled measured cross-project facts (a quantization result, a provenance metric), attributed a bug to its originating project, listed the active context set, and correctly excluded a disabled project.
 
 ## What it did for my work
 
