@@ -78,6 +78,49 @@ def non_inferiority(pairs, delta, key="resolved", alpha=0.05):
 def mean_tokens(rows):
     return sum(r["input_tokens"] + r["output_tokens"] for r in rows) / len(rows) if rows else 0.0
 
+def repo_of(task_id):
+    """Best-effort repo stratum from a SWE-bench instance_id (e.g. 'django__django-1234')."""
+    return task_id.split("-")[0] if task_id else "unknown"
+
+def cochran_mantel_haenszel(pairs):
+    """CMH test (ETH's success-rate test), stratified by repo. Paired by task.
+    Returns (statistic, approx_p). Strata = repos; 2x2 (condition x resolved) per stratum."""
+    strata = defaultdict(lambda: [[0, 0], [0, 0]])  # [ [a_res,a_unres],[b_res,b_unres] ]
+    for ra, rb in pairs:
+        s = strata[repo_of(ra["task_id"])]
+        s[0][0] += int(ra["resolved"]); s[0][1] += 1 - int(ra["resolved"])
+        s[1][0] += int(rb["resolved"]); s[1][1] += 1 - int(rb["resolved"])
+    num = 0.0; den = 0.0
+    for s in strata.values():
+        a = s[0][0]; b = s[0][1]; c = s[1][0]; d = s[1][1]
+        n = a + b + c + d
+        if n == 0: continue
+        num += a - ((a + b) * (a + c)) / n
+        den += ((a + b) * (c + d) * (a + c) * (b + d)) / (n * n * (n - 1)) if n > 1 else 0
+    if den <= 0:
+        return 0.0, 1.0
+    chi2 = (abs(num) - 0.5) ** 2 / den
+    return round(chi2, 4), round(math.erfc(math.sqrt(chi2 / 2)), 4)
+
+def stratified_permutation(pairs, metric, n_perm=5000, seed=0):
+    """ETH's steps/cost test: stratified permutation on a paired continuous metric.
+    Within each task, randomly swap (a,b) labels; p = P(|mean diff| >= observed)."""
+    rng = random.Random(seed)
+    vals = [(metric(a), metric(b)) for a, b in pairs]
+    if not vals: return 1.0
+    obs = abs(sum(x - y for x, y in vals) / len(vals))
+    ge = 0
+    for _ in range(n_perm):
+        d = 0.0
+        for x, y in vals:
+            if rng.random() < 0.5: d += x - y
+            else: d += y - x
+        if abs(d / len(vals)) >= obs - 1e-12: ge += 1
+    return round((ge + 1) / (n_perm + 1), 4)
+
+def _tok(r): return r.get("input_tokens", 0) + r.get("output_tokens", 0)
+def _steps(r): return r.get("steps", 0)
+
 def pareto(cond_stats):
     """Points (tokens, rate); mark Pareto-optimal (low tokens, high rate)."""
     pts = [(c, s["mean_tokens"], s["resolved_rate"]) for c, s in cond_stats.items()]
@@ -111,6 +154,9 @@ def main():
             b, c, chi2, p = mcnemar(pr)
             out["comparisons"][f"{tiered}_vs_{mono}"] = {
                 "mcnemar": {"b": b, "c": c, "chi2": round(chi2, 4), "p": round(p, 4)},
+                "cmh_success": dict(zip(("chi2", "p"), cochran_mantel_haenszel(pr))),
+                "perm_tokens_p": stratified_permutation(pr, _tok),
+                "perm_steps_p": stratified_permutation(pr, _steps),
                 "rate_diff_ci": dict(zip(("diff", "ci_low", "ci_high"), bootstrap_diff_ci(pr, alpha=alpha))),
                 "non_inferiority": non_inferiority(pr, delta, alpha=alpha),
                 "token_reduction_vs_monolithic": round(
