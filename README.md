@@ -1,6 +1,8 @@
-# Context Configuration Builder
+# Consistent Context Kit
 
 **Persistent, token-efficient, cross-project memory for AI coding agents.**
+
+*(formerly "Context Configuration Builder" / kiro-context-kit)*
 
 Your AI agent forgets everything between sessions and re-reads your whole codebase to catch up. Context Configuration Builder (CCB) gives it durable memory it loads once and updates as you work — with an explicit, measured token-cost model so context stays cheap. Configure *which* projects and *which* rules are active as editable lists; project the same context onto any agent.
 
@@ -54,7 +56,25 @@ Your mileage depends on your agent version and configuration.
 - `demo/demo.sh` — clean-room walkthrough (basis for the demo GIF)
 - `docs/ARCHITECTURE.md` — the token-cost design
 - `docs/paper/` — novelty write-up (three-tier cost-stratified context architecture)
+- `research/precision_context/` — **precision-aware context** (evidence-backed): the same
+  "spend the expensive resource only where it changes behavior" principle applied to the model
+  *precision* axis, grounded in a companion quantization×memorization study (measured, real data)
 - `marketing/` — launch post + go-to-market strategy
+
+## Precision-aware context (evidence-backed feature)
+
+The kit's cost-tiering thesis generalizes beyond context loading. A companion study measured what
+model behavior actually changes under quantization (FP16→INT8→INT4):
+- **Factuality is robust to INT4** (N=100 PopQA, p=1.0, CI [−0.10,+0.08]) — aggressive compression is
+  safe for factual-recall workloads.
+- **Memorization erodes first** (reconstruction GAP declines with precision) — verbatim recall needs
+  higher precision.
+
+`research/precision_context/precision_advisor.py` reads the study's real analysis JSON and emits a
+workload-aware recommendation (factual → tolerate INT4 + lean context; verbatim → preserve precision
++ load specific source). It reports "underpowered / can't conclude" when the data doesn't support a
+claim — the same measure-don't-assert discipline the kit applies to context-cost numbers.
+See `research/precision_context/FINDINGS.md`.
 
 ## Try it in 30 seconds (safe, no changes to your setup)
 
