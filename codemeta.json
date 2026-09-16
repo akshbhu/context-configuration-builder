@@ -1,0 +1,20 @@
+{
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "name": "Consistent Context Kit",
+  "description": "A three-tier, token-efficient context system for AI coding agents plus a pre-registered controlled study of access-pattern-tiered context, extending ETH 'Evaluating AGENTS.md' with real SWE-bench test-execution grading and from-scratch statistics.",
+  "codeRepository": "https://github.com/pupa3066/context-configuration-builder",
+  "programmingLanguage": ["Python", "Shell"],
+  "license": "https://spdx.org/licenses/BUSL-1.1",
+  "version": "1.0.0",
+  "datePublished": "2026-09-16",
+  "keywords": ["llm agents", "context engineering", "reliable information synthesis", "swe-bench", "interpretability"],
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Purnima",
+      "familyName": "Pathak",
+      "@id": "https://orcid.org/0009-0000-6441-7962"
+    }
+  ]
+}
