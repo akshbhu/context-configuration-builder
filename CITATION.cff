@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "Consistent Context Kit"
+abstract: >-
+  A three-tier, token-efficient context system for AI coding agents, plus a
+  pre-registered controlled study of access-pattern-tiered context. Extends the
+  ETH "Evaluating AGENTS.md" negative result with real SWE-bench test-execution
+  grading and from-scratch statistics (McNemar, bootstrap CIs, non-inferiority,
+  Cochran-Mantel-Haenszel, stratified permutation).
+type: software
+authors:
+  - given-names: Purnima
+    family-names: Pathak
+    orcid: "https://orcid.org/0009-0000-6441-7962"
+keywords:
+  - llm agents
+  - context engineering
+  - reliable information synthesis
+  - swe-bench
+license-url: "https://github.com/pupa3066/context-configuration-builder/blob/main/LICENSE"
+repository-code: "https://github.com/pupa3066/context-configuration-builder"
