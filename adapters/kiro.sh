@@ -1,5 +1,5 @@
 #!/bin/sh
-# Kiro adapter: project the Context Configuration Builder core onto Kiro CLI.
+# Kiro adapter: project the Consistent Context Kit core onto Kiro CLI.
 #   always-on/*  -> ~/.kiro/steering/*
 #   projects/<n> -> ~/.kiro/skills/<n>/SKILL.md  (adds required frontmatter)
 # Usage: ./adapters/kiro.sh apply [--dry-run]

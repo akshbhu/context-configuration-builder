@@ -1,4 +1,4 @@
-# Measured Results — Token Cost of Tiered Context
+# Consistent Context Kit — Measured Results: Token Cost of Tiered Context
 
 > Status: PRELIMINARY measured apparatus result (not a task-quality claim).
 > Real measured data at N=4; larger N is a closed-form projection from measured per-project averages.

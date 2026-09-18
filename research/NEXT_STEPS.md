@@ -1,4 +1,4 @@
-# NEXT STEPS — kiro-context-kit research run
+# NEXT STEPS — Consistent Context Kit research run
 
 > Saved 2026-09-15. The apparatus + stats are built and verified offline (STATUS.md).
 > The missing piece is REAL data. This file is the turnkey plan.
