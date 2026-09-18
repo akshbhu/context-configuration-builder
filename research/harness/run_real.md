@@ -45,6 +45,15 @@ python research/harness/swebench_run.py \
 Or on Windows: `pwsh research/harness/run_pilot_cuda.ps1 -Limit 10`. The agent refuses to start
 if the torch build lacks kernels for the detected GPU (the cu121-on-Blackwell trap).
 
+## 2c. Generate on one host, grade on another
+`swebench_run.py --no-grade` persists each patch in the runs file and skips Docker. Then, on any
+host with Docker (x86_64 preferred; SWE-bench images are x86):
+```sh
+python research/harness/grade_patches.py research/harness/runs_pilot_cuda.jsonl --workers 2
+```
+This writes `…graded.jsonl` with `resolved` filled in, one swebench run per (condition, repeat).
+Patches are persisted even when grading inline, so any run can be re-graded or inspected.
+
 ## 3. Full run
 ```sh
 python research/harness/swebench_run.py \

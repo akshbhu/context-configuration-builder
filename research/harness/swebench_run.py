@@ -86,13 +86,16 @@ def main():
     ap.add_argument("--repeats", type=int, default=1)
     ap.add_argument("--out", default="research/harness/runs.jsonl")
     ap.add_argument("--dry-config", action="store_true", help="print resolved config and exit")
+    ap.add_argument("--no-grade", action="store_true",
+                    help="generate + persist patches only; grade later with grade_patches.py "
+                         "(lets generation run on a GPU host and grading on a Docker host)")
     a = ap.parse_args()
 
     conds = tuple(
         {"C0": "C0_no_context", "C1": "C1_monolithic",
          "C2": "C2_tiered_manual", "C3": "C3_tiered_auto"}[c] for c in a.conditions.split(","))
     cfg = {"agent": a.agent, "split": a.split, "limit": a.limit,
-           "conditions": conds, "repeats": a.repeats, "out": a.out}
+           "conditions": conds, "repeats": a.repeats, "out": a.out, "graded_inline": not a.no_grade}
     if a.dry_config:
         print(json.dumps(cfg, indent=2)); return
 
@@ -116,9 +119,14 @@ def main():
                     t0 = time.perf_counter()
                     try:
                         patch, itok, otok, steps = agent.solve(t.prompt, ctx)
-                        resolved, note = grade(inst, patch)
+                        gen_s = round(time.perf_counter()-t0, 3)
+                        if a.no_grade:
+                            resolved, note = None, "ungraded"
+                        else:
+                            resolved, note = grade(inst, patch)
+                        # persist the patch so runs can be (re)graded and inspected
                         row.update(resolved=resolved, input_tokens=itok, output_tokens=otok,
-                                   steps=steps, seconds=round(time.perf_counter()-t0, 3), note=note)
+                                   steps=steps, seconds=gen_s, note=note, patch=patch)
                     except Exception as e:
                         row.update(resolved=False, input_tokens=0, output_tokens=0, steps=0,
                                    seconds=round(time.perf_counter()-t0, 3), error=str(e))

@@ -44,6 +44,15 @@ class LocalHFAgent:
                     f"GPU is {arch} but this torch build has no {arch} kernels "
                     f"({torch.cuda.get_arch_list()}). Install a matching wheel "
                     f"(RTX 50-series: --index-url https://download.pytorch.org/whl/cu128).")
+            free_b, total_b = torch.cuda.mem_get_info()
+            free_gb, total_gb = free_b / 2**30, total_b / 2**30
+            print(f"[local-hf] {torch.cuda.get_device_name(0)} {arch}: "
+                  f"{free_gb:.1f} / {total_gb:.1f} GB VRAM free", flush=True)
+            if free_gb < 1.5:
+                raise RuntimeError(
+                    f"only {free_gb:.1f} GB VRAM free; another process holds the GPU "
+                    f"(check nvidia-smi / `ollama ps`). Free it before running, or OOM will hit "
+                    f"the long-context conditions first and bias the comparison.")
 
         kw = {"device_map": self.device}
         if precision in ("int4", "int8"):
