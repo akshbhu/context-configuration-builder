@@ -1,0 +1,26 @@
+name: PR safeguard (sensitive-info + attribution)
+
+# Runs on every pull request (including from forks) and on pushes to main, so contributions
+# are scanned for sensitive-info leaks and attribution/provenance BEFORE they can be merged.
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  safeguard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # full tree so ls-files sees everything in the PR
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run PR safeguard (blocks merge on failure)
+        run: python3 scripts/check_pr.py
+      # Non-zero exit fails the check -> PR cannot be merged until leaks/attribution are fixed.
