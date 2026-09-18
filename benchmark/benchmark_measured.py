@@ -22,7 +22,7 @@ ap.add_argument("example_skill", nargs="?", default="templates/skills/_example/S
 ap.add_argument("--out", default="benchmark/results_measured.json")
 ap.add_argument("--ns", default="1,4,10,25,50,100")
 ap.add_argument("--body-scales", default="1,2,3.5",
-                help="multipliers of the shipped body length (3.5x ~ author's 774-tok private bodies)")
+                help="multipliers of the shipped body length (sensitivity sweep; body-only text is scaled, frontmatter fixed)")
 a = ap.parse_args()
 
 from transformers import AutoTokenizer
@@ -45,11 +45,11 @@ fm_lines, body_lines = lines[:end+1], lines[end+1:]
 fm_text, body_text = "\n".join(fm_lines), "\n".join(body_lines)
 
 def make_skill(i, body_scale):
-    """Real skill file text for project i. Frontmatter name/desc substituted; body repeated
-    body_scale times to emulate longer per-project context."""
+    """Real skill file text for project i. Only the frontmatter `name:` line is substituted;
+    the shipped `description:` is kept verbatim so metadata size matches the shipped template
+    (rewriting it shortened frontmatter 46->28 tokens and made 'shipped' numbers inconsistent
+    with benchmark.py). Body is repeated body_scale times to emulate longer per-project context."""
     fm = re.sub(r"(?m)^name:.*$", f"name: project-{i:03d}-context", fm_text)
-    fm = re.sub(r"(?m)^description:.*$",
-                f"description: Deep context for project {i:03d}. Use when working in project-{i:03d}.", fm)
     whole = int(body_scale); frac = body_scale - whole
     body = body_text * whole
     if frac > 0:
@@ -96,7 +96,9 @@ out = {
     "shipped_example_body_tokens": mb, "shipped_example_meta_tokens": mm,
     "note": ("Every row is MEASURED from real generated skill files. 'projected' is the shipped "
              "closed-form formula applied to the same base sizes, for comparison. body_scale=1 is the "
-             "shipped example skill; 3.5 approximates the author's ~774-token private bodies."),
+             "shipped example skill verbatim (only name: substituted); larger scales repeat the body text "
+             "with frontmatter held fixed, as a body-length sensitivity sweep."),
+    "asymptote_by_scale": {str(s): round(1 - mm / measure(1, s, 1)["mean_body"], 4) for s in scales},
     "projected_closed_form_scale1_k1": projected,
     "measured": rows,
 }
@@ -126,4 +128,7 @@ for n in ns:
         r = next(r for r in rows if r["n"]==n and r["body_scale"]==s and r["k_active"]==1)
         vals.append(f"{r['reduction']:>9.3f}")
     print(f"{n:>4} {''.join(vals)}")
+print("\n== asymptote 1 - meta/body (N->inf, k=1) ==")
+for s_ in scales:
+    print(f"  x{s_:g}: {out['asymptote_by_scale'][str(s_)]:.3f}")
 print(f"\nwrote {a.out}")

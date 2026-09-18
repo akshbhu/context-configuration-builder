@@ -22,7 +22,7 @@ ax[0].plot(ns, [proj[str(n)] for n in ns], "k--", lw=2, label="closed-form proje
 ax[0].plot(ns, pick(1.0, 1), "o-", color="tab:blue", lw=2, label="MEASURED (real files)")
 ax[0].axhline(0, color="gray", lw=0.8)
 ax[0].set_xscale("log"); ax[0].set_xlabel("# projects (N)"); ax[0].set_ylabel("token reduction vs monolithic")
-ax[0].set_title("Projection is accurate\n(measured tracks formula within 0.7pt)")
+ax[0].set_title("Projection is accurate\n(measured tracks formula within 0.1pt)")
 ax[0].legend(fontsize=8); ax[0].grid(alpha=.3)
 
 # Panel 2: active-projects-per-turn sensitivity
@@ -36,7 +36,7 @@ ax[1].legend(fontsize=8); ax[1].grid(alpha=.3)
 # Panel 3: body-length sensitivity
 scales = sorted({r["body_scale"] for r in rows})
 for s, c in zip(scales, ("tab:blue", "tab:green", "tab:purple")):
-    lbl = f"body x{s:g}" + (" (shipped example)" if s == 1.0 else " (~author's private bodies)" if s == max(scales) else "")
+    lbl = f"body x{s:g}" + (" (shipped example)" if s == 1.0 else "")
     ax[2].plot(ns, pick(s, 1), "o-", color=c, lw=2, label=lbl)
 ax[2].axhline(0, color="gray", lw=0.8)
 ax[2].set_xscale("log"); ax[2].set_xlabel("# projects (N)"); ax[2].set_ylabel("token reduction")
