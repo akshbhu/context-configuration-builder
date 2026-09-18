@@ -5,7 +5,7 @@ token accounting (prompt and completion counted with the model's own tokenizer),
 two backends are comparable. Additive: the MLX path is untouched.
 
 Requires: torch (CUDA build matching your GPU), transformers, and for --int4/--int8 bitsandbytes.
-Weights are loaded from a LOCAL directory; no network at run time (HF_HUB_OFFLINE=1 is set).
+Weights are loaded from a LOCAL directory with local_files_only=True (no model download at run time).
 
 RTX 50-series (Blackwell, sm_120): the default cu121 PyTorch wheels report
 torch.cuda.is_available() == True but every kernel fails. Install the cu128 build:
@@ -24,8 +24,8 @@ import os
 
 from local_agent import _build_prompt  # identical prompt to the MLX agent
 
-os.environ.setdefault("HF_HUB_OFFLINE", "1")
-os.environ.setdefault("TRANSFORMERS_OFFLINE", "1")
+# Offline applies to MODEL loading only (set local_files_only below); the dataset fetch in
+# swebench_run.py still needs the Hub unless it is already cached.
 
 
 class LocalHFAgent:
@@ -66,8 +66,8 @@ class LocalHFAgent:
         else:
             kw["torch_dtype"] = torch.float16 if self.device == "cuda" else torch.float32
 
-        self.tokenizer = AutoTokenizer.from_pretrained(model_path)
-        self.model = AutoModelForCausalLM.from_pretrained(model_path, **kw).eval()
+        self.tokenizer = AutoTokenizer.from_pretrained(model_path, local_files_only=True)
+        self.model = AutoModelForCausalLM.from_pretrained(model_path, local_files_only=True, **kw).eval()
         self.max_tokens, self.temp, self.precision = max_tokens, temp, precision
         self._torch = torch
 

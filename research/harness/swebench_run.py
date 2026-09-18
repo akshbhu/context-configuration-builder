@@ -27,8 +27,9 @@ CONTEXT_FILE_NAMES = ("AGENTS.md", "CLAUDE.md", "README.md", "CONTRIBUTING.md")
 
 def load_tasks(split: str, limit: int):
     from datasets import load_dataset
-    name = {"verified": "princeton-nlp/SWE-bench_Verified",
-            "lite": "princeton-nlp/SWE-bench_Lite"}.get(split, split)
+    # same repo ids the swebench grader uses (princeton-nlp/* are redirects to these)
+    name = {"verified": "SWE-bench/SWE-bench_Verified",
+            "lite": "SWE-bench/SWE-bench_Lite"}.get(split, split)
     ds = load_dataset(name, split="test")
     if limit:
         ds = ds.select(range(min(limit, len(ds))))
