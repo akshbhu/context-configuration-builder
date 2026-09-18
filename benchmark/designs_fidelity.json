@@ -1,0 +1,31 @@
+{
+  "_note": "FIDELITY-AXIS designs. This is a DIFFERENT metric axis from benchmark/designs.json (token-cost). Fidelity designs measure GROUNDING RETENTION (fraction of task-needed facts still present in the loaded context) vs TOKEN SAVING. They answer 'does deferring/compressing lose the facts the task needs?', NOT 'how many always-on tokens'. Do not compare fidelity numbers against token-cost numbers: different axes, different units.",
+  "axis": "fidelity (grounding_retention vs token_saving)",
+  "compare_to_axes": {
+    "token_cost": "benchmark/designs.json + run_designs.py (measures always-on tokens + rule-firing integrity; unit = tokens)",
+    "fidelity": "this file + run_fidelity.py (measures grounding retention vs token saving; unit = fraction of needed facts retained)"
+  },
+  "sample_root": "benchmark/sample",
+  "designs": {
+    "F1_lossless_grounding": {
+      "definition": "Lossless deferral: full body loaded on demand when a task needs it (no compression). Grounding is a NULL CONTROL: retention must equal the monolithic baseline.",
+      "compression_level": 0.0,
+      "claim": "Grounding retention = 1.0 (identical to monolithic); lossless deferral loses no needed fact. Token saving comes from deferral, not from shrinking content."
+    },
+    "F2_summarized_L033": {
+      "definition": "Lossy summarization at compression level 0.33 (structural operator: keep code/identifier lines, drop prose).",
+      "compression_level": 0.33,
+      "claim": "Retention still 1.0 at level 0.33 (safe frontier lower bound); modest token saving."
+    },
+    "F3_summarized_L050": {
+      "definition": "Lossy summarization at level 0.50 (measured safe frontier from the N=6 study).",
+      "compression_level": 0.50,
+      "claim": "Retention 1.0 at level 0.50 (safe frontier); this is the maximum safe compression."
+    },
+    "F4_summarized_L066": {
+      "definition": "Lossy summarization at level 0.66 (past the safe frontier).",
+      "compression_level": 0.66,
+      "claim": "Retention DROPS below 1.0 (facts lost); large token saving but UNSAFE for fact-recall. Demonstrates the cliff."
+    }
+  }
+}

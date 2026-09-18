@@ -1,52 +1,72 @@
 # Tiering Designs Registry
 
-Each design below is a **named, defined, claim-paired, runnable unit**. This is how a contributor knows
-exactly what they are testing and confirming, independent of git branches. Every design is measured
-against the committed sample corpus in `benchmark/sample/` (real gpt2-BPE), so results are reproducible
-by anyone, not tied to a private `~/.kiro/`.
+Each design below is a **named, defined, claim-paired, runnable unit**, so a contributor knows exactly
+what they are testing and confirming, independent of git branches. All designs measure against the
+committed sample corpus in `benchmark/sample/` (real gpt2-BPE), reproducible by anyone.
 
-## How to test (one command)
+## Two benchmark families (DIFFERENT metric axes - do not mix)
+There are TWO axes. A design belongs to exactly one. Their numbers are NOT comparable (different units).
+
+| Axis | Question | Metric / unit | Registry | Runner |
+|---|---|---|---|---|
+| **Token-cost** | How many tokens load every turn? Do rules still fire? | always-on tokens; firing integrity (count) | `benchmark/designs.json` | `run_designs.py` |
+| **Fidelity** | Does deferral/compression lose the facts a task needs? | grounding retention (fraction of needed facts) vs token saving | `benchmark/designs_fidelity.json` | `run_fidelity.py` |
+
+LABEL DISCIPLINE (important when comparing designs with different labels): a token-cost result (in
+tokens) and a fidelity result (fraction of facts retained) answer different questions and MUST NOT be
+put in the same column or compared directly. "Design A saves more tokens" and "Design B retains more
+facts" are on different axes; the honest comparison reports each axis separately and, if trading off,
+states the tradeoff explicitly (e.g. "F4 saves 98% tokens but retains only 20% of needed facts").
+
+## How to test (one command per axis)
 ```sh
 pip install transformers
-python benchmark/run_designs.py               # all designs, comparison table + per-design claim check
-python benchmark/run_designs.py --design L2_3location   # one design
+# TOKEN-COST axis (always-on tokens + rule firing):
+python benchmark/run_designs.py               # all token-cost designs
+python benchmark/run_designs.py --design L2_3location
+# FIDELITY axis (grounding retention vs token saving):
+python benchmark/run_fidelity.py              # all fidelity designs
+python benchmark/run_fidelity.py --design F3_summarized_L050
 ```
-Output per design: NAME, DEFINITION, CLAIM, MEASURED (always-on tokens, per-turn tokens, rule-firing
-integrity), and whether the design is SAFE (all must-fire rules still bind).
+Each prints, per design: NAME, DEFINITION, CLAIM, MEASURED, and SAFE.
 
-## The designs
+## Token-cost designs (run_designs.py)
 | Design | Definition | Claim |
 |---|---|---|
 | **L0_monolithic** | No tiering; full rule detail + all project bodies always-on. | Baseline: highest per-turn tokens. |
-| **L1_2location** | Steering always-on (full detail) + per-project skills (metadata always, one body on demand). | Lower than monolithic (inactive bodies deferred); steering still carries full rule detail. |
-| **L2_3location** | Lean steering + separate on-demand tier (governance/formatting/cross-links deferred, stubs kept) + skills. | Lower always-on than 2-location; all must-fire rules still fire via stubs. |
-| **L3_depth_safe_frontier** | 3-location plus protection-track detail also deferred (compact list + stubs kept). | Lowest always-on among SAFE designs; firing integrity still full. |
+| **L1_2location** | Steering always-on (full detail) + skills (metadata always, one body on demand). | Lower than monolithic; steering still full detail. |
+| **L2_3location** | Lean steering + on-demand tier (governance/formatting/cross-links deferred, stubs kept) + skills. | Lower always-on; all must-fire rules still fire. |
+| **L3_depth_safe_frontier** | 3-location plus protection-track detail deferred. | Lowest always-on among SAFE designs; firing integrity full. |
 
-## Measured on the sample corpus (real gpt2-BPE)
-| Design | per-turn tokens | reduction vs L0 | firing | safe |
-|---|---|---|---|---|
-| L0_monolithic | 3853 | 0% | 12/12 | yes |
-| L1_2location | 2842 | 26.2% | 12/12 | yes |
-| L2_3location | 585 | 84.8% | 12/12 | yes |
-| L3_depth_safe_frontier | 585 | 84.8% | 12/12 | yes |
+Measured (sample corpus): L0 3853 -> L1 2842 (26.2%) -> L2/L3 585 (84.8%), firing 12/12, all safe.
+Best safe: L2/L3 (lowest tokens with full firing integrity).
 
-Best SAFE design on this sample: L2/L3 (lowest per-turn tokens with full rule-firing integrity).
-L2 and L3 coincide here because the sample protection-track detail is small; on a deployment with
-larger track notes they diverge (the mechanism measures whatever the corpus contains).
+## Fidelity designs (run_fidelity.py)
+| Design | Definition | Claim |
+|---|---|---|
+| **F1_lossless_grounding** | Lossless deferral (level 0.0); grounding null-control. | Retention = 1.0 (identical to monolithic); no fact lost. |
+| **F2_summarized_L033** | Lossy summarization level 0.33. | Retention still 1.0; modest saving. |
+| **F3_summarized_L050** | Lossy summarization level 0.50 (measured safe frontier). | Retention 1.0; max safe compression. |
+| **F4_summarized_L066** | Lossy summarization level 0.66 (past frontier). | Retention DROPS below 1.0; large saving but UNSAFE (the cliff). |
+
+Measured (sample corpus): F1 ret 1.0/save 0.0 -> F2/F3 ret 1.0/save ~0.87 (safe) -> F4 ret 0.20/save 0.98 (UNSAFE cliff).
+Best safe fidelity: F2/F3 (max token saving while retention == 1.0).
 
 ## What "confirming a design" means
-A contributor confirms a design by running `run_designs.py` and checking the MEASURED result against
-the stated CLAIM, and that SAFE is true (firing integrity full). "Better" = lowest per-turn tokens with
-full firing integrity, never the lowest number if it drops a must-fire rule (a rule that is not loaded
-does not bind).
+Run the design's runner; check MEASURED against the stated CLAIM and that SAFE is true. "Better" is
+axis-specific: token-cost = lowest always-on tokens with full firing integrity; fidelity = max token
+saving with retention == 1.0. Never the biggest saving if it breaks the safe condition (a rule that is
+not loaded does not bind; a fact that is dropped is not recalled).
 
 ## Scope
-MEASURED structure/cost + rule-firing integrity on the sample corpus. This is NOT task quality; whether
-tiering changes agent task success requires a real-agent SWE-bench run (see research/harness/contribute_run.py).
-Per-branch write-ups (RULE_TIERING.md, THREE_LOCATION_TIERING.md, TIERING_DEPTH.md, TOKEN_MODEL_COMPARISON.md)
-document each design's story; this registry is the single reproducible test surface.
+MEASURED structure/cost, firing integrity, and grounding retention on the sample corpus. NOT task
+quality; whether tiering changes agent task success needs a real-agent SWE-bench run
+(research/harness/contribute_run.py). Per-branch write-ups (RULE_TIERING.md, THREE_LOCATION_TIERING.md,
+TIERING_DEPTH.md, TOKEN_MODEL_COMPARISON.md, FINDINGS_summarization_fidelity.md) document each design's
+story; this registry is the single reproducible test surface.
 
 ## Adding a design (contributors)
-Add an entry to `benchmark/designs.json` (always_on / on_demand file lists + a claim), then run
-`run_designs.py`. No new branch needed: a design is data + a claim + the shared runner.
+Token-cost design: add to `benchmark/designs.json` (always_on/on_demand file lists + claim), run
+`run_designs.py`. Fidelity design: add to `benchmark/designs_fidelity.json` (compression_level + claim),
+run `run_fidelity.py`. No new branch needed: a design is data + a claim + the shared runner for its axis.
 EOF
