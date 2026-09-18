@@ -29,9 +29,18 @@ TEXT_EXT = {".py", ".md", ".sh", ".json", ".jsonl", ".yml", ".yaml", ".cff", ".t
 
 
 def tracked_files():
+    """Files in scope: tracked + staged + untracked-but-not-ignored. This catches a leak whether or
+    not it is committed yet (a local pre-commit run and a PR both get scanned). Ignored files (.gitignore)
+    are excluded, matching what could ever be pushed."""
     try:
-        out = subprocess.run(["git", "-C", ROOT, "ls-files"], capture_output=True, text=True, timeout=30).stdout
-        return [os.path.join(ROOT, p) for p in out.splitlines() if p.strip()]
+        # -c = tracked, -o = untracked, --exclude-standard = respect .gitignore
+        out = subprocess.run(["git", "-C", ROOT, "ls-files", "-co", "--exclude-standard"],
+                             capture_output=True, text=True, timeout=30).stdout
+        seen, files = set(), []
+        for p in out.splitlines():
+            if p.strip() and p not in seen:
+                seen.add(p); files.append(os.path.join(ROOT, p))
+        return files
     except Exception:
         return []
 
