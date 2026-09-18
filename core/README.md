@@ -1,4 +1,4 @@
-# Context Configuration Builder — agent-independent core
+# Consistent Context Kit — agent-independent core
 
 The architecture is agent-neutral. Only the **loading mechanism** differs per agent, handled by a thin **adapter**.
 

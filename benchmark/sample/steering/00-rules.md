@@ -1,0 +1,2 @@
+# Rules (sample) - always-on stubs (every rule fires here)
+R0 rule governance. R1 foreign repos. R2 no churn. R3 explicit-instruction primacy. R4 patent-disclosure gate [detail on-demand]. 6a empirical-threshold flag [detail]. 6b pre-post integrity gate [detail]. 10b-h formatting [detail]. 14 private-by-default. 16 never commit secrets. 17 no push to main without confirm. 18 bootstrap. 19 incremental update. 20-23 merge gates [detail].

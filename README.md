@@ -4,7 +4,7 @@
 
 *(formerly "Context Configuration Builder" / kiro-context-kit)*
 
-Your AI agent forgets everything between sessions and re-reads your whole codebase to catch up. Context Configuration Builder (CCB) gives it durable memory it loads once and updates as you work — with an explicit, measured token-cost model so context stays cheap. Configure *which* projects and *which* rules are active as editable lists; project the same context onto any agent.
+Your AI agent forgets everything between sessions and re-reads your whole codebase to catch up. Consistent Context Kit gives it durable memory it loads once and updates as you work — with an explicit, measured token-cost model so context stays cheap. Configure *which* projects and *which* rules are active as editable lists; project the same context onto any agent.
 
 > License: Business Source License 1.1 (source-available). Free for personal/internal use. Commercial redistribution or hosted resale requires a license until the Change Date, when it converts to Apache-2.0. See [LICENSE](LICENSE).
 

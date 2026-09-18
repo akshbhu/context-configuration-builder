@@ -20,7 +20,7 @@ add(){ notes="${notes}$1"$'\n'; }
 # The single-model "monotonic INT4 erases memorization" claim was overturned by the 6-model run.
 # If it reappears anywhere in kit FINDINGS or steering, flag it.
 STALE_PATTERN='monotonic.*(0\.025|INT4 erases memorization)|0\.025 . 0\.017 . 0\.000'
-for f in "$PROJ/kiro-context-kit/research/precision_context/FINDINGS.md" \
+for f in "$PROJ/consistent-context-kit/research/precision_context/FINDINGS.md" \
          "$KIRO/steering/cross-links.md"; do
   [ -f "$f" ] || continue
   if grep -Eiq "$STALE_PATTERN" "$f"; then
@@ -39,7 +39,7 @@ if [ -f "$REG" ]; then
 fi
 
 # --- 3. Cross-project data freshness: kit advisor should still run on real study data ---------
-ADV="$PROJ/kiro-context-kit/research/precision_context/precision_advisor.py"
+ADV="$PROJ/consistent-context-kit/research/precision_context/precision_advisor.py"
 STUDY_JSON="$PROJ/quant-memorization-study/analysis_popqa_qwen05.json"
 if [ -f "$ADV" ] && [ -f "$STUDY_JSON" ]; then
   if ! python3 "$ADV" "$STUDY_JSON" >/dev/null 2>&1; then

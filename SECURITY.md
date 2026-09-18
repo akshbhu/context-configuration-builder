@@ -1,6 +1,6 @@
 # Security
 
-Context Configuration Builder is designed to be safe to install and run on any system.
+Consistent Context Kit is designed to be safe to install and run on any system.
 
 ## Network posture
 - **The core tool makes NO network calls.** The installer, adapters, and scripts read
