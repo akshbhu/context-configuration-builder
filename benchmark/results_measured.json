@@ -1,0 +1,504 @@
+{
+  "tokenizer": "gpt2-bpe (real)",
+  "always_on_tokens": 1150,
+  "steering_files": [
+    "00-rules.md",
+    "bootstrap.md",
+    "context-registry.md",
+    "cross-links.md",
+    "portfolio.md"
+  ],
+  "shipped_example_body_tokens": 203,
+  "shipped_example_meta_tokens": 28,
+  "note": "Every row is MEASURED from real generated skill files. 'projected' is the shipped closed-form formula applied to the same base sizes, for comparison. body_scale=1 is the shipped example skill; 3.5 approximates the author's ~774-token private bodies.",
+  "projected_closed_form_scale1_k1": {
+    "1": -0.0207,
+    "4": 0.2533,
+    "10": 0.4865,
+    "25": 0.6702,
+    "50": 0.7564,
+    "100": 0.8064
+  },
+  "measured": [
+    {
+      "n": 1,
+      "body_scale": 1.0,
+      "k_active": 1,
+      "mean_body": 203,
+      "mean_meta": 28,
+      "mono": 1353,
+      "tiered": 1381,
+      "reduction": -0.0207
+    },
+    {
+      "n": 4,
+      "body_scale": 1.0,
+      "k_active": 1,
+      "mean_body": 203,
+      "mean_meta": 28,
+      "mono": 1965,
+      "tiered": 1469,
+      "reduction": 0.2524
+    },
+    {
+      "n": 4,
+      "body_scale": 1.0,
+      "k_active": 2,
+      "mean_body": 203,
+      "mean_meta": 28,
+      "mono": 1965,
+      "tiered": 1673,
+      "reduction": 0.1486
+    },
+    {
+      "n": 4,
+      "body_scale": 1.0,
+      "k_active": 3,
+      "mean_body": 203,
+      "mean_meta": 28,
+      "mono": 1965,
+      "tiered": 1877,
+      "reduction": 0.0448
+    },
+    {
+      "n": 10,
+      "body_scale": 1.0,
+      "k_active": 1,
+      "mean_body": 203,
+      "mean_meta": 28,
+      "mono": 3189,
+      "tiered": 1643,
+      "reduction": 0.4848
+    },
+    {
+      "n": 10,
+      "body_scale": 1.0,
+      "k_active": 2,
+      "mean_body": 203,
+      "mean_meta": 28,
+      "mono": 3189,
+      "tiered": 1847,
+      "reduction": 0.4208
+    },
+    {
+      "n": 10,
+      "body_scale": 1.0,
+      "k_active": 3,
+      "mean_body": 203,
+      "mean_meta": 28,
+      "mono": 3189,
+      "tiered": 2051,
+      "reduction": 0.3569
+    },
+    {
+      "n": 25,
+      "body_scale": 1.0,
+      "k_active": 1,
+      "mean_body": 203,
+      "mean_meta": 28,
+      "mono": 6249,
+      "tiered": 2078,
+      "reduction": 0.6675
+    },
+    {
+      "n": 25,
+      "body_scale": 1.0,
+      "k_active": 2,
+      "mean_body": 203,
+      "mean_meta": 28,
+      "mono": 6249,
+      "tiered": 2282,
+      "reduction": 0.6348
+    },
+    {
+      "n": 25,
+      "body_scale": 1.0,
+      "k_active": 3,
+      "mean_body": 203,
+      "mean_meta": 28,
+      "mono": 6249,
+      "tiered": 2486,
+      "reduction": 0.6022
+    },
+    {
+      "n": 50,
+      "body_scale": 1.0,
+      "k_active": 1,
+      "mean_body": 204,
+      "mean_meta": 29,
+      "mono": 11359,
+      "tiered": 2815,
+      "reduction": 0.7522
+    },
+    {
+      "n": 50,
+      "body_scale": 1.0,
+      "k_active": 2,
+      "mean_body": 204,
+      "mean_meta": 29,
+      "mono": 11359,
+      "tiered": 3021,
+      "reduction": 0.734
+    },
+    {
+      "n": 50,
+      "body_scale": 1.0,
+      "k_active": 3,
+      "mean_body": 204,
+      "mean_meta": 29,
+      "mono": 11359,
+      "tiered": 3227,
+      "reduction": 0.7159
+    },
+    {
+      "n": 100,
+      "body_scale": 1.0,
+      "k_active": 1,
+      "mean_body": 204,
+      "mean_meta": 29,
+      "mono": 21633,
+      "tiered": 4339,
+      "reduction": 0.7994
+    },
+    {
+      "n": 100,
+      "body_scale": 1.0,
+      "k_active": 2,
+      "mean_body": 204,
+      "mean_meta": 29,
+      "mono": 21633,
+      "tiered": 4545,
+      "reduction": 0.7899
+    },
+    {
+      "n": 100,
+      "body_scale": 1.0,
+      "k_active": 3,
+      "mean_body": 204,
+      "mean_meta": 29,
+      "mono": 21633,
+      "tiered": 4751,
+      "reduction": 0.7804
+    },
+    {
+      "n": 1,
+      "body_scale": 2.0,
+      "k_active": 1,
+      "mean_body": 377,
+      "mean_meta": 28,
+      "mono": 1527,
+      "tiered": 1555,
+      "reduction": -0.0183
+    },
+    {
+      "n": 4,
+      "body_scale": 2.0,
+      "k_active": 1,
+      "mean_body": 377,
+      "mean_meta": 28,
+      "mono": 2661,
+      "tiered": 1643,
+      "reduction": 0.3826
+    },
+    {
+      "n": 4,
+      "body_scale": 2.0,
+      "k_active": 2,
+      "mean_body": 377,
+      "mean_meta": 28,
+      "mono": 2661,
+      "tiered": 2021,
+      "reduction": 0.2405
+    },
+    {
+      "n": 4,
+      "body_scale": 2.0,
+      "k_active": 3,
+      "mean_body": 377,
+      "mean_meta": 28,
+      "mono": 2661,
+      "tiered": 2399,
+      "reduction": 0.0985
+    },
+    {
+      "n": 10,
+      "body_scale": 2.0,
+      "k_active": 1,
+      "mean_body": 377,
+      "mean_meta": 28,
+      "mono": 4929,
+      "tiered": 1817,
+      "reduction": 0.6314
+    },
+    {
+      "n": 10,
+      "body_scale": 2.0,
+      "k_active": 2,
+      "mean_body": 377,
+      "mean_meta": 28,
+      "mono": 4929,
+      "tiered": 2195,
+      "reduction": 0.5547
+    },
+    {
+      "n": 10,
+      "body_scale": 2.0,
+      "k_active": 3,
+      "mean_body": 377,
+      "mean_meta": 28,
+      "mono": 4929,
+      "tiered": 2573,
+      "reduction": 0.478
+    },
+    {
+      "n": 25,
+      "body_scale": 2.0,
+      "k_active": 1,
+      "mean_body": 377,
+      "mean_meta": 28,
+      "mono": 10599,
+      "tiered": 2252,
+      "reduction": 0.7875
+    },
+    {
+      "n": 25,
+      "body_scale": 2.0,
+      "k_active": 2,
+      "mean_body": 377,
+      "mean_meta": 28,
+      "mono": 10599,
+      "tiered": 2630,
+      "reduction": 0.7519
+    },
+    {
+      "n": 25,
+      "body_scale": 2.0,
+      "k_active": 3,
+      "mean_body": 377,
+      "mean_meta": 28,
+      "mono": 10599,
+      "tiered": 3008,
+      "reduction": 0.7162
+    },
+    {
+      "n": 50,
+      "body_scale": 2.0,
+      "k_active": 1,
+      "mean_body": 378,
+      "mean_meta": 29,
+      "mono": 20059,
+      "tiered": 2989,
+      "reduction": 0.851
+    },
+    {
+      "n": 50,
+      "body_scale": 2.0,
+      "k_active": 2,
+      "mean_body": 378,
+      "mean_meta": 29,
+      "mono": 20059,
+      "tiered": 3369,
+      "reduction": 0.832
+    },
+    {
+      "n": 50,
+      "body_scale": 2.0,
+      "k_active": 3,
+      "mean_body": 378,
+      "mean_meta": 29,
+      "mono": 20059,
+      "tiered": 3749,
+      "reduction": 0.8131
+    },
+    {
+      "n": 100,
+      "body_scale": 2.0,
+      "k_active": 1,
+      "mean_body": 378,
+      "mean_meta": 29,
+      "mono": 39033,
+      "tiered": 4513,
+      "reduction": 0.8844
+    },
+    {
+      "n": 100,
+      "body_scale": 2.0,
+      "k_active": 2,
+      "mean_body": 378,
+      "mean_meta": 29,
+      "mono": 39033,
+      "tiered": 4893,
+      "reduction": 0.8746
+    },
+    {
+      "n": 100,
+      "body_scale": 2.0,
+      "k_active": 3,
+      "mean_body": 378,
+      "mean_meta": 29,
+      "mono": 39033,
+      "tiered": 5273,
+      "reduction": 0.8649
+    },
+    {
+      "n": 1,
+      "body_scale": 3.5,
+      "k_active": 1,
+      "mean_body": 634,
+      "mean_meta": 28,
+      "mono": 1784,
+      "tiered": 1812,
+      "reduction": -0.0157
+    },
+    {
+      "n": 4,
+      "body_scale": 3.5,
+      "k_active": 1,
+      "mean_body": 634,
+      "mean_meta": 28,
+      "mono": 3689,
+      "tiered": 1900,
+      "reduction": 0.485
+    },
+    {
+      "n": 4,
+      "body_scale": 3.5,
+      "k_active": 2,
+      "mean_body": 634,
+      "mean_meta": 28,
+      "mono": 3689,
+      "tiered": 2535,
+      "reduction": 0.3128
+    },
+    {
+      "n": 4,
+      "body_scale": 3.5,
+      "k_active": 3,
+      "mean_body": 634,
+      "mean_meta": 28,
+      "mono": 3689,
+      "tiered": 3170,
+      "reduction": 0.1407
+    },
+    {
+      "n": 10,
+      "body_scale": 3.5,
+      "k_active": 1,
+      "mean_body": 634,
+      "mean_meta": 28,
+      "mono": 7499,
+      "tiered": 2074,
+      "reduction": 0.7234
+    },
+    {
+      "n": 10,
+      "body_scale": 3.5,
+      "k_active": 2,
+      "mean_body": 634,
+      "mean_meta": 28,
+      "mono": 7499,
+      "tiered": 2709,
+      "reduction": 0.6388
+    },
+    {
+      "n": 10,
+      "body_scale": 3.5,
+      "k_active": 3,
+      "mean_body": 634,
+      "mean_meta": 28,
+      "mono": 7499,
+      "tiered": 3344,
+      "reduction": 0.5541
+    },
+    {
+      "n": 25,
+      "body_scale": 3.5,
+      "k_active": 1,
+      "mean_body": 634,
+      "mean_meta": 28,
+      "mono": 17024,
+      "tiered": 2509,
+      "reduction": 0.8526
+    },
+    {
+      "n": 25,
+      "body_scale": 3.5,
+      "k_active": 2,
+      "mean_body": 634,
+      "mean_meta": 28,
+      "mono": 17024,
+      "tiered": 3144,
+      "reduction": 0.8153
+    },
+    {
+      "n": 25,
+      "body_scale": 3.5,
+      "k_active": 3,
+      "mean_body": 634,
+      "mean_meta": 28,
+      "mono": 17024,
+      "tiered": 3779,
+      "reduction": 0.778
+    },
+    {
+      "n": 50,
+      "body_scale": 3.5,
+      "k_active": 1,
+      "mean_body": 635,
+      "mean_meta": 29,
+      "mono": 32909,
+      "tiered": 3246,
+      "reduction": 0.9014
+    },
+    {
+      "n": 50,
+      "body_scale": 3.5,
+      "k_active": 2,
+      "mean_body": 635,
+      "mean_meta": 29,
+      "mono": 32909,
+      "tiered": 3883,
+      "reduction": 0.882
+    },
+    {
+      "n": 50,
+      "body_scale": 3.5,
+      "k_active": 3,
+      "mean_body": 635,
+      "mean_meta": 29,
+      "mono": 32909,
+      "tiered": 4520,
+      "reduction": 0.8627
+    },
+    {
+      "n": 100,
+      "body_scale": 3.5,
+      "k_active": 1,
+      "mean_body": 635,
+      "mean_meta": 29,
+      "mono": 64733,
+      "tiered": 4770,
+      "reduction": 0.9263
+    },
+    {
+      "n": 100,
+      "body_scale": 3.5,
+      "k_active": 2,
+      "mean_body": 635,
+      "mean_meta": 29,
+      "mono": 64733,
+      "tiered": 5407,
+      "reduction": 0.9165
+    },
+    {
+      "n": 100,
+      "body_scale": 3.5,
+      "k_active": 3,
+      "mean_body": 635,
+      "mean_meta": 29,
+      "mono": 64733,
+      "tiered": 6044,
+      "reduction": 0.9066
+    }
+  ]
+}
