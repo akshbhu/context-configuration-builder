@@ -5,3 +5,4 @@
 research/harness/*.jsonl
 __pycache__/
 *.pyc
+research/harness/contrib_*/
