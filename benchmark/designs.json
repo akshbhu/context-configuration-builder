@@ -1,0 +1,70 @@
+{
+  "_note": "Each design is a named, defined, claim-paired unit. Tiers reference files under benchmark/sample/. A design defines which files sit ALWAYS-ON (loaded every turn) vs ON-DEMAND (loaded only when triggered) vs PER-PROJECT (skill metadata always, body on demand). run_designs.py measures each against the sample corpus and checks the claim.",
+  "sample_root": "benchmark/sample",
+  "must_fire_rules": [
+    "R0",
+    "R1",
+    "R2",
+    "R3",
+    "R4",
+    "6a",
+    "6b",
+    "10b-h",
+    "14",
+    "16",
+    "17",
+    "20-23"
+  ],
+  "designs": {
+    "L0_monolithic": {
+      "definition": "No tiering. All steering (with full governance/formatting detail) plus all project bodies loaded every turn.",
+      "always_on": [
+        "steering/*",
+        "on-demand/*"
+      ],
+      "on_demand": [],
+      "load_all_project_bodies": true,
+      "claim": "Baseline: highest per-turn tokens; full rule detail present."
+    },
+    "L1_2location": {
+      "definition": "Two locations: steering always-on (full detail) + per-project skills (metadata always, one active body on demand). On-demand rule tier does NOT exist yet.",
+      "always_on": [
+        "steering/*",
+        "on-demand/rules-governance-appendix.md",
+        "on-demand/formatting-appendix.md",
+        "on-demand/protection-tracks.md",
+        "on-demand/cross-links.md"
+      ],
+      "on_demand": [],
+      "load_all_project_bodies": false,
+      "claim": "Lower than monolithic: inactive project bodies deferred; but steering still carries full rule detail."
+    },
+    "L2_3location": {
+      "definition": "Three locations: lean steering always-on + separate on-demand tier (governance/formatting/cross-links deferred) + per-project skills. Rule detail moved off always-on; one-line stubs kept.",
+      "always_on": [
+        "steering/*"
+      ],
+      "on_demand": [
+        "on-demand/rules-governance-appendix.md",
+        "on-demand/formatting-appendix.md",
+        "on-demand/cross-links.md"
+      ],
+      "load_all_project_bodies": false,
+      "claim": "Lower always-on than 2-location; all must-fire rules still fire via stubs (firing integrity full)."
+    },
+    "L3_depth_safe_frontier": {
+      "definition": "3-location plus protection-track detail also deferred to on-demand (compact list + stubs kept always-on). The measured safe frontier.",
+      "always_on": [
+        "steering/*"
+      ],
+      "on_demand": [
+        "on-demand/rules-governance-appendix.md",
+        "on-demand/formatting-appendix.md",
+        "on-demand/cross-links.md",
+        "on-demand/protection-tracks.md"
+      ],
+      "load_all_project_bodies": false,
+      "claim": "Lowest always-on among SAFE designs; firing integrity still full (all must-fire rules bind)."
+    }
+  }
+}
