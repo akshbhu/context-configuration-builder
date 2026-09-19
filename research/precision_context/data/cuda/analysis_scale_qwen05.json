@@ -1,4 +1,8 @@
 {
+  "measured_by": "Akshay Upadhyay",
+  "harness_version": "quant-memorization-study v1.1.0 (commit ca0bec9), src/harness.py + src/analysis.py, --backend hf",
+  "hardware": "NVIDIA GeForce RTX 5060 Laptop GPU (8 GB), Windows 11 / WSL2",
+  "backend": "Transformers + bitsandbytes (CUDA), offline",
   "data_source": "results/runs_scale_qwen05_int4.jsonl",
   "n_rows": 48,
   "per_precision": {
